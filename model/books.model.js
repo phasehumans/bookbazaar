@@ -36,6 +36,9 @@ const Book = new Schema({
     ratings : {
         type : Number,
         default : 0
+    },
+    addedBy : {
+        type : ObjectId
     }
 
 }, {

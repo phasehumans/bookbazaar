@@ -3,14 +3,15 @@ const app = express()
 const cors = require('cors')
 const {connectDB} = require('./utils/db')
 const { authRouter } = require('./routes/auth.route')
+const { bookRouter } = require('./routes/books.route')
 
 app.use(express.json())
 app.use(cors())
 
 
 // routes
-app.use('/api/v1/auth', authRouter )
-app.use('/api/v1/books', )
+app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/books', bookRouter)
 app.use('/api/v1/review', )
 app.use('/api/v1/orders', )
 app.use('/api/v1/payments', )
