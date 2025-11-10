@@ -4,6 +4,7 @@ const cors = require('cors')
 const {connectDB} = require('./utils/db')
 const { authRouter } = require('./routes/auth.route')
 const { bookRouter } = require('./routes/books.route')
+const { reviewRouter } = require('./routes/review.route')
 
 app.use(express.json())
 app.use(cors())
@@ -12,7 +13,7 @@ app.use(cors())
 // routes
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/books', bookRouter)
-app.use('/api/v1/review', )
+app.use('/api/v1/review', reviewRouter)
 app.use('/api/v1/orders', )
 app.use('/api/v1/payments', )
 
