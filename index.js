@@ -23,12 +23,12 @@ app.use('/api/v1/payments', paymentsRouter)
 
 const port = process.env.PORT;
 
-connectDB
-    .then(()=>{
+connectDB()
+    .then(() => {
         app.listen(port)
         console.log(`port is running on ${port}`)
     })
-    .catch(() => {
+    .catch((error) => {
         console.log("mongodb connection failed", error)
         process.exit(1)
     })
