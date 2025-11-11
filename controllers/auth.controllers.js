@@ -66,16 +66,27 @@ const registerAdmin = async(req, res) => {
         return
     }
 
+    const existUser = await UserModel.findOne({
+      email: email,
+    });
+
+    if (existUser) {
+      return res.json({
+        message: "email already exists, sign-up with another email",
+      });
+    }
+
     try {
         const hashPassword = await bcrypt.hash(password, 5)
-    
+        
+        const role = "admin"
         await UserModel.create({
             firstName : firstName,
             lastName : lastName,
             email : email,
             password : hashPassword,
             address : address,
-            role : "admin"
+            role : role
         })
 
         res.json({
@@ -94,19 +105,30 @@ const loginUser = async (req, res) => {
     const password = req.body.password
     
     if(!email || !password){
-        res.json({
+        return res.json({
             message : "all fields are required"
         })
     }
 
-    const user = UserModel.find({
+    const user = await UserModel.findOne({
         email : email
     })
+
+    if(!user){
+        return res.json({
+            message : "email doesnot exist"
+        })
+    }
+
+    // console.log(user)
 
     const passwordMatch = await bcrypt.compare(password, user.password)
 
     if(passwordMatch){
-        const token = jwt.sign(user.id, process.env.JWT_SECRET)
+        const token = jwt.sign(
+          { _id: user.id, role: user.role },
+          process.env.JWT_SECRET
+        );
         res.json({
             message : "logged in",
             token : token

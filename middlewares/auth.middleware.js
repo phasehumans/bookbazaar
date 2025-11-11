@@ -2,20 +2,22 @@ const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 dotenv.config()
 
-const authMiddleware = (req, res) => {
+const authMiddleware = (req, res, next) => {
     const token = req.headers.token
 
     if(!token){
-        res.json({
+        return res.json({
             message : "need token for auth"
         })
     }
 
    try {
      const decodedData = jwt.verify(token, process.env.JWT_SECRET)
-     req.userid = decodedData.id
+     req.userid = decodedData._id
      req.role = decodedData.role
-     // console.log(req.role, req.userid)
+    //  console.log(decodedData)
+    //  console.log(req.role)
+    //  console.log(req.userid);
      next()
    } catch (error) {
         return res.json({
