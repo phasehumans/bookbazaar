@@ -159,6 +159,16 @@ const deleteBook = async(req, res) => {
       });
     }
 
+    const bookExist = await BookModel.findOne({
+        _id : bookId
+    })
+
+    if(!bookExist){
+        return res.json({
+            message : "book not exists"
+        })
+    }
+
     try {
         const result = await BookModel.deleteOne({
             _id : bookId,
