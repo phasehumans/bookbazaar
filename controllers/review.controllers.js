@@ -8,11 +8,15 @@ const addReview = async(req, res) => {
     const comment = req.body.comment
     const ratings = req.body.ratings
 
+    // console.log(req.body);
+
     if(!comment || !ratings){
         return res.json({
             message : "comment and rating is required"
         })
     }
+
+    // console.log(req.body)
 
     try {
         await ReviewModel.create({

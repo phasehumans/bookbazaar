@@ -2,23 +2,13 @@
 
 Book Bazaar is Node.js/Express backend for an online bookstore. It provides user authentication, books management, reviews, orders, and a mock payments API designed for local development and testing.
 
-Tech stack
-- Node.js
-- Express
-- MongoDB (Mongoose)
-
-Purpose
-- Provide a small, extendable backend to demo REST API patterns for e-commerce-like apps.
-- Include a mock Razorpay-style payment flow for testing payment handling without external integrations.
-
-
-## Features
+### Features
 - User registration and JWT-based authentication
 - CRUD-like endpoints for books and reviews
 - Orders and payments models with a simple mock payment flow
 
 
-## Install & Run
+### Install & Run
 1. Clone and install
 
 ```powershell
@@ -41,7 +31,7 @@ The API will be available at:
 http://localhost:3000/api/v1
 ```
 
-## Folder structure
+### Folder structure
 Top-level layout of the repository (important files and folders):
 
 ```
