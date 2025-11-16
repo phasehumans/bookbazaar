@@ -12,7 +12,7 @@ Book Bazaar is Node.js/Express backend for an online bookstore. It provides user
 1. Clone and install
 
 ```powershell
-git clone <repo-url>
+git clone https://github.com/phasehumans/bookbazaar.git
 cd "Book Bazaar"
 npm install
 ```
@@ -23,12 +23,6 @@ npm install
 
 ```powershell
 npm run dev
-```
-
-The API will be available at:
-
-```
-http://localhost:3000/api/v1
 ```
 
 ### Folder structure
