@@ -1,61 +1,122 @@
-# Book Bazaar
+﻿# Book Bazaar
 
-Book Bazaar is Node.js/Express backend for an online bookstore. It provides user authentication, books management, reviews, orders, and a mock payments API designed for local development and testing.
+Node.js/Express backend for an online bookstore with MongoDB, JWT auth, and payments.
 
-### Features
-- User registration and JWT-based authentication
-- CRUD-like endpoints for books and reviews
-- Orders and payments models with a simple mock payment flow
+## Architecture
 
-
-### Install & Run
-1. Clone and install
-
-```powershell
-git clone https://github.com/phasehumans/bookbazaar.git
-cd "Book Bazaar"
-npm install
+```
+Client ──HTTP──▶ Routes ──▶ Controllers ──▶ Models ──▶ MongoDB
+                    ▲
+                Middleware (Auth)
 ```
 
-2. Create a `.env` file in the project root (.env.example):
 
-3. Start the server
-
-```powershell
-npm run dev
-```
-
-### Folder structure
-Top-level layout of the repository (important files and folders):
+## Project Structure
 
 ```
 Book Bazaar/
-├─ index.js                # app entry, route wiring
-├─ package.json
-├─ README.md
-├─ .env.example
-├─ controllers/           # request handlers
-│  ├─ auth.controllers.js
-│  ├─ books.controllers.js
-│  ├─ orders.controllers.js
-│  ├─ payments.controllers.js
-│  └─ review.controllers.js
-├─ routes/                # express routers
-│  ├─ auth.route.js
-│  ├─ books.route.js
-│  ├─ orders.route.js
-│  ├─ payments.route.js
-│  └─ review.route.js
-├─ model/                 # mongoose models
-│  ├─ books.model.js
-│  ├─ orders.model.js
-│  ├─ payments.model.js
-│  ├─ reviews.model.js
-│  └─ users.model.js
-├─ middlewares/
-│  └─ auth.middleware.js
-├─ utils/
-│  └─ db.js
-└─ node_modules/
+├── index.js                          # App entry point & route mounting
+├── package.json                      # Dependencies & scripts
+├── .env.example                      # Environment template
+├── .gitignore
+│
+├── controllers/                      # Business logic layer
+│   ├── auth.controllers.js           # User registration & login
+│   ├── books.controllers.js          # Book CRUD operations
+│   ├── orders.controllers.js         # Order creation & management
+│   ├── payments.controllers.js       # Payment processing
+│   └── review.controllers.js         # Review & rating operations
+│
+├── routes/                           # Express route definitions
+│   ├── auth.route.js                 # POST /api/auth/register, /login
+│   ├── books.route.js                # GET /api/books, POST, PUT, DELETE
+│   ├── orders.route.js               # GET /api/orders, POST
+│   ├── payments.route.js             # POST /api/payments/process
+│   └── review.route.js               # GET /api/reviews, POST, DELETE
+│
+├── model/                            # Data models & schemas
+│   ├── users.model.js                # User schema (email, password, role)
+│   ├── books.model.js                # Book schema (title, author, price, etc)
+│   ├── cart.models.js                # Cart schema (userId, items array)
+│   ├── orders.model.js               # Order schema (userId, items, total, status)
+│   ├── payments.model.js             # Payment schema (orderId, amount, status)
+│   └── reviews.model.js              # Review schema (userId, bookId, rating, text)
+│
+├── middlewares/                      # Custom middleware
+│   └── auth.middleware.js            # JWT verification & user extraction
+│
+├── utils/                            # Utility functions
+│   ├── db.js                         # MongoDB connection setup
+│   └── mail.js                       # Email sending functionality
+│
+└── postman/
+    └── BookBazaar.postman_collection.json  # Complete API documentation
 ```
 
+## Data Flow Diagram
+
+```
+┌──────────────┐
+│   Frontend   │
+└──────┬───────┘
+       │ HTTP Request
+       ▼
+┌──────────────────────────┐
+│   Express Server         │
+├──────────────────────────┤
+│ ┌─────────────────────┐  │
+│ │  Route Handler      │  │ (index.js mounts all routes)
+│ └──────────┬──────────┘  │
+│            ▼             │
+│ ┌─────────────────────┐  │
+│ │ Auth Middleware     │  │ (validates JWT token)
+│ └──────────┬──────────┘  │
+│            ▼             │
+│ ┌─────────────────────┐  │
+│ │ Controller Logic    │  │ (processes business logic)
+│ └──────────┬──────────┘  │
+│            ▼             │
+│ ┌─────────────────────┐  │
+│ │ Mongoose Model      │  │ (queries database)
+│ └──────────┬──────────┘  │
+└───────────┬──────────────┘
+            ▼
+    ┌───────────────┐
+    │   MongoDB     │
+    │  (Database)   │
+    └───────────────┘
+```
+
+
+## Authentication Flow
+
+```
+User Login Request
+    │
+    ▼
+POST /api/auth/login
+    │
+    ▼
+auth.controllers.js
+    │ (Verify credentials)
+    ▼
+Generate JWT Token
+    │
+    ▼
+Send Token to Client
+    │
+    ▼
+Client stores token in localStorage
+    │
+    ▼
+Attach token to future requests (Authorization header)
+    │
+    ▼
+auth.middleware.js (verifyToken)
+    │ (Decode & validate JWT)
+    ▼
+Extract userId from token
+    │
+    ▼
+Proceed to controller or reject (401)
+```
