@@ -2,15 +2,6 @@
 
 Node.js/Express backend for an online bookstore with MongoDB, JWT auth, and payments.
 
-## Architecture
-
-```
-Client ──HTTP──▶ Routes ──▶ Controllers ──▶ Models ──▶ MongoDB
-                    ▲
-                Middleware (Auth)
-```
-
-
 ## Project Structure
 
 ```
@@ -52,41 +43,6 @@ Book Bazaar/
 └── postman/
     └── BookBazaar.postman_collection.json  # Complete API documentation
 ```
-
-## Data Flow Diagram
-
-```
-┌──────────────┐
-│   Frontend   │
-└──────┬───────┘
-       │ HTTP Request
-       ▼
-┌──────────────────────────┐
-│   Express Server         │
-├──────────────────────────┤
-│ ┌─────────────────────┐  │
-│ │  Route Handler      │  │ (index.js mounts all routes)
-│ └──────────┬──────────┘  │
-│            ▼             │
-│ ┌─────────────────────┐  │
-│ │ Auth Middleware     │  │ (validates JWT token)
-│ └──────────┬──────────┘  │
-│            ▼             │
-│ ┌─────────────────────┐  │
-│ │ Controller Logic    │  │ (processes business logic)
-│ └──────────┬──────────┘  │
-│            ▼             │
-│ ┌─────────────────────┐  │
-│ │ Mongoose Model      │  │ (queries database)
-│ └──────────┬──────────┘  │
-└───────────┬──────────────┘
-            ▼
-    ┌───────────────┐
-    │   MongoDB     │
-    │  (Database)   │
-    └───────────────┘
-```
-
 
 ## Authentication Flow
 
